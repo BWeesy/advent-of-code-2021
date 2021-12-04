@@ -1,3 +1,4 @@
+from fileHandler import getLines
 class dataWindow:
   def __init__(self, windowData, windowSize):
     self.windowData = windowData
@@ -22,12 +23,6 @@ class dataWindow:
       for datum in self.windowData:
         sum += datum
     return sum
-
-def getLines(file):
-  file1 = open(file, 'r')
-  lines = file1.readlines()
-  file1.close()
-  return lines
 
 def signalIncreased(last, next):
   return last < next
