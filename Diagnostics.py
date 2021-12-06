@@ -42,7 +42,6 @@ def getGammaAndEpsilon(count, frequencies):
     else: #more 0's
       gammaString += '0'
       epsilonString += '1'
-    print(f"{gammaString} - {epsilonString}")
 
   return int(gammaString, 2), int(epsilonString, 2)
 
@@ -64,8 +63,7 @@ def getScrubberRating(inputs, inputLength):
     if(len(result) == 1):
       break
     frequency = getFrequencyAtPosition(result, index)
-    print(f"index:{index} freq:{frequency} count:{len(result)} prop:{frequency/len(result)} result:{list(map(bin, result))}")
-    if(frequency/len(result) <= 0.5): #more 0's
+    if(frequency/len(result) < 0.5): #more 0's
       result = filterInputsAtIndex(result, 1, index)
     else: #more 1's
       result = filterInputsAtIndex(result, 0, index)
@@ -96,4 +94,4 @@ def test():
   assert scrubberResult == 10, f"{scrubberResult} - {bin(scrubberResult)}"
 
 if __name__ == "__main__":
-  test()
+  main()
