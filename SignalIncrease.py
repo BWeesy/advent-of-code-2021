@@ -6,16 +6,14 @@ class dataWindow:
 
   def addDatum(self, datum):
     self.windowData.append(datum)
-    return self.trimOldestData(self.windowSize)
+    self.trimOldestData(self.windowSize)
 
   def isFull(self):
     return len(self.windowData) == self.windowSize
 
   def trimOldestData(self, size):
     if len(self.windowData) > size:
-      return self.windowData.pop(0)
-    else:
-      return None
+      self.windowData.pop(0)
 
   def getSum(self):
     sum = 0
