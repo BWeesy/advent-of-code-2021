@@ -1,5 +1,6 @@
 def getLines(file):
-  file1 = open(file, 'r')
-  lines = file1.readlines()
-  file1.close()
+  lines = [str]
+  with open(file, 'r') as raw:
+    lines = raw.readlines()
+    raw.close()
   return lines
