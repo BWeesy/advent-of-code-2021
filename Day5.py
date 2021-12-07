@@ -26,8 +26,14 @@ class Vector():
 def main():
   inputs = list(getLines('input/day5'))
   vectors = [Vector(line) for line in inputs]
+
+  ventLocations = {}
   for vector in vectors:
-    print(f"{vector} - {vector.getCoveredCoordinates()}")
+    coveredCoords = vector.getCoveredCoordinates()
+    for coveredCoord in coveredCoords:
+      ventLocations[coveredCoord] = ventLocations.setdefault(coveredCoord, 0) + 1
+  dangerousVents = [ventLocations[loc] for loc in ventLocations if ventLocations[loc]>1]
+  print(f"There are {len(dangerousVents)} dangerous vents")
   return
 
 if __name__ == "__main__":
