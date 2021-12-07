@@ -9,8 +9,6 @@ class Vector():
     self.startY = startY
     self.endX = endX
     self.endY = endY
-    print(f"({startX}, {startY}) -> ({endX}, {endY})")
-    print(f"({self.startX}, {self.startY}) -> ({self.endX}, {self.endY})")
 
   def getCoveredCoordinates(self):
     coveredCoords = []
