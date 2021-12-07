@@ -11,11 +11,19 @@ class Vector():
     self.endY = endY
 
   def getCoveredCoordinates(self):
-    coveredCoords = []
     if self.startX == self.endX: #Vertical line
-      coveredCoords = [(self.startX, y) for y in range(min(self.startY, self.endY), max(self.startY, self.endY) + 1)]
+      return [(self.startX, y) for y in range(min(self.startY, self.endY), max(self.startY, self.endY) + 1)]
     if self.startY == self.endY: #Horizontal line
-      coveredCoords = [(x, self.startY) for x in range(min(self.startX, self.endX), max(self.startX, self.endX) + 1)]
+      return [(x, self.startY) for x in range(min(self.startX, self.endX), max(self.startX, self.endX) + 1)]
+    
+    #Diagonal line
+    xRange = range(self.startX, self.endX+1, 1) if self.startX < self.endX else range(self.startX, self.endX-1, -1)
+    yRange = range(self.startY, self.endY+1, 1) if self.startY < self.endY else range(self.startY, self.endY-1, -1)
+
+    coveredCoords = []
+    for i, x in enumerate(xRange):
+      y = yRange[i]
+      coveredCoords.append((x, y))
     return coveredCoords
 
   def __str__(self):
