@@ -1,4 +1,4 @@
-from fileHandler import getLines
+import fileHandler as fh
 
 INPUT_LENGTH = 12
 
@@ -70,7 +70,7 @@ def getScrubberRating(inputs, inputLength):
   return result[0]
 
 def main():
-  inputs = list(map(extractBinaryNumberFromString, getLines('input/day3')))
+  inputs = fh.getMappedLines('input/day3', extractBinaryNumberFromString)
 
   [gamma, epsilon] = getGammaAndEpsilon(len(inputs), getFrequencyAtPositions(inputs))
   print(f"Power consumption: {gamma * epsilon}")

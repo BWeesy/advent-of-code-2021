@@ -1,4 +1,4 @@
-from fileHandler import getLines
+import fileHandler as fh
 
 class Vector():
   def __init__(self, line):
@@ -30,8 +30,7 @@ class Vector():
     return f"({self.startX}, {self.startY}) -> ({self.endX}, {self.endY})"
 
 def main():
-  inputs = list(getLines('input/day5'))
-  vectors = [Vector(line) for line in inputs]
+  vectors = fh.getMappedLines('input/day5', lambda x: Vector(x))
 
   ventLocations = {}
   for vector in vectors:

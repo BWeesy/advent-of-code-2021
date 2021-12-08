@@ -1,4 +1,4 @@
-from fileHandler import getLines
+import fileHandler as fh
 
 class Submarine:
   def __init__(self):
@@ -27,11 +27,10 @@ class Submarine:
       self.up(int(amount))
     if(direction == "down"):
       self.down(int(amount))
-    print(f"ins:{direction} {amount} horiz:{self.horizontal} aim:{self.aim} depth:{self.depth}")
 
 def main():
   submarine = Submarine()
-  for line in getLines('input/day2'):
+  for line in fh.getLines('input/day2'):
     submarine.parseInstruction(line)
   print(submarine.getPosition())
 

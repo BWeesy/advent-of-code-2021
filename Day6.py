@@ -1,4 +1,4 @@
-from fileHandler import getLines
+import fileHandler as fh
 
 class Day():
   def __init__(self):
@@ -31,7 +31,7 @@ class Day():
 
 
 def main():
-  input = list(map(int, list(getLines('input/day6'))[0].split(',')))
+  input = fh.getMappedCommaSeparatedFirstLine('input/day6', int)
   firstDay = [input.count(x) for x in range(0, 9)]
 
   day = Day()

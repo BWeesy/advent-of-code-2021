@@ -1,4 +1,4 @@
-from fileHandler import getLines
+import fileHandler as fh
 
 class BoardUnit():
   def __init__(self, number):
@@ -66,7 +66,7 @@ def splitToCards(lines, n):
       yield filteredLines[x: n+x]
 
 def main():
-  inputs = list(getLines('input/day4'))
+  inputs = list(fh.getLines('input/day4'))
   calledNumbers = list(map(int, inputs[0].split(",")))
   rawCards = splitToCards(inputs[1:], 5)
 

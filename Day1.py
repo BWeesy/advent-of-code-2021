@@ -1,4 +1,4 @@
-from fileHandler import getLines
+import fileHandler as fh
 class dataWindow:
   def __init__(self, windowData, windowSize):
     self.windowData = windowData
@@ -28,7 +28,7 @@ def signalIncreased(last, next):
 def main():
   windowedData = []
   window = dataWindow([], 3)
-  for line in getLines('input/day1'):
+  for line in fh.getLines('input/day1'):
     next = int(line.strip())
     window.addDatum(next)
     if(window.isFull()):
