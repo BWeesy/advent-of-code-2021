@@ -63,27 +63,27 @@ def determineNextKnownCode(codes, knownCodes):
 
     if len(code) == 6 and FOUR in knownCodes and isSubset(knownCodes[FOUR], binaryCode):
       result[NINE] = binaryCode
-      return result
+      continue
 
     if len(code) == 6 and ONE in knownCodes and isSubset(knownCodes[ONE], binaryCode):
       result[ZERO] = binaryCode
-      return result
+      continue
 
-    if len(code) == 6:
+    if len(code) == 6 and ONE in knownCodes and FOUR in knownCodes:
       result[SIX] = binaryCode
-      return result
+      continue
 
     if len(code) == 5 and SIX in knownCodes and isSubset(binaryCode, knownCodes[SIX]):
       result[FIVE] = binaryCode
-      return result
+      continue
 
     if len(code) == 5 and ONE in knownCodes and isSubset(knownCodes[ONE], binaryCode):
       result[THREE] = binaryCode
-      return result
+      continue
 
     if len(code) == 5 and SIX in knownCodes and NINE in knownCodes:
       result[TWO] = binaryCode
-      return result
+      continue
   return result
 
 def determineAllKnownCodes(codes):
@@ -98,31 +98,31 @@ def convertReadOutToNumber(readout):
     result += digit * pow(10, i)
   return result
 
+def decodeAndSumOutput(codes, output):
+  knownCodes = determineAllKnownCodes(codes)
+  result = []
+  for element in [convertElementToBinary(output) for output in output]:
+    result.append(reverseLookup(knownCodes, element))
+  return convertReadOutToNumber(result)
+
 def main():
-  codesWithOutputs = fh.getMappedLines('input/day8', extractInputOutput)
-  oneFourSevenOrEightSum = 0
+  lines = fh.getMappedLines('input/day8', extractInputOutput)
 
-  for codes, output in codesWithOutputs:
-    knownCodes = findEasySequences(codes)
-    outputInBinary = [convertElementToBinary(output) for output in output]
-    intersections = [x for x in outputInBinary if x in knownCodes.values()]
+  result = sum([decodeAndSumOutput(codes, output) for codes, output in lines])
 
-    oneFourSevenOrEightSum += len(intersections)
-    #print(f"{knownCodes} - {outputInBinary} - {intersections}")
-
-  print(f"Intersections {oneFourSevenOrEightSum}")
+  print(f"Sum of all outputs {result}")
 
 def test():
   codesWithOutputs = extractInputOutput('acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf')
-  outputInBinary = [convertElementToBinary(output) for output in codesWithOutputs[1]]
   knownCodes = determineAllKnownCodes(codesWithOutputs[0])
 
-  print(f"knownCodes - {knownCodes}")
+  assert knownCodes == {8: 127, 7: 104, 4: 102, 1: 96, 3: 122, 9: 126, 6: 63, 0: 125, 5: 62, 2: 91}, f"{knownCodes}"
 
-  result = []
-  for element in outputInBinary:
-    result.append(reverseLookup(knownCodes, element))
-  print(convertReadOutToNumber(result))
+  result = decodeAndSumOutput(codesWithOutputs[0], codesWithOutputs[1])
+
+  assert result == 5353, f"{result}"
+
+  print("Tests passed")
 
 if __name__ == "__main__":
-  test()
+  main()
