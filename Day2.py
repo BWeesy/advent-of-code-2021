@@ -31,7 +31,7 @@ class Submarine:
 
 def main():
   submarine = Submarine()
-  for line in getLines('input/day2.txt'):
+  for line in getLines('input/day2'):
     submarine.parseInstruction(line)
   print(submarine.getPosition())
 

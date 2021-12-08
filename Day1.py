@@ -28,7 +28,7 @@ def signalIncreased(last, next):
 def main():
   windowedData = []
   window = dataWindow([], 3)
-  for line in getLines('input/day1.txt'):
+  for line in getLines('input/day1'):
     next = int(line.strip())
     window.addDatum(next)
     if(window.isFull()):
