@@ -107,19 +107,15 @@ def decodeAndSumOutput(codes, output):
 
 def main():
   lines = fh.getMappedLines('input/day8', extractInputOutput)
-
   result = sum([decodeAndSumOutput(codes, output) for codes, output in lines])
-
   print(f"Sum of all outputs {result}")
 
 def test():
   codesWithOutputs = extractInputOutput('acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf')
   knownCodes = determineAllKnownCodes(codesWithOutputs[0])
-
   assert knownCodes == {8: 127, 7: 104, 4: 102, 1: 96, 3: 122, 9: 126, 6: 63, 0: 125, 5: 62, 2: 91}, f"{knownCodes}"
 
   result = decodeAndSumOutput(codesWithOutputs[0], codesWithOutputs[1])
-
   assert result == 5353, f"{result}"
 
   print("Tests passed")
