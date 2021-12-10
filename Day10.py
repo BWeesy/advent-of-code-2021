@@ -1,4 +1,5 @@
 import fileHandler as fh
+from statistics import median
 
 ANGLED_OPEN = '<'
 ANGLED_CLOSE = '>'
@@ -19,6 +20,20 @@ BRACKET_PAIRS = {
   BRACKET_CLOSE  : BRACKET_OPEN,
 }
 
+ILLEGAL_SCORES = {
+  BRACKET_CLOSE : 3,
+  SQUARE_CLOSE : 57,
+  CURLY_CLOSE : 1197,
+  ANGLED_CLOSE : 25137
+}
+
+INCOMPLETE_SCORES = {
+  BRACKET_OPEN : 1,
+  SQUARE_OPEN : 2,
+  CURLY_OPEN : 3,
+  ANGLED_OPEN : 4
+}
+
 class ChunkValidator():
   def __init__(self) -> None:
     self.illegalCharacters = []
@@ -28,29 +43,40 @@ class ChunkValidator():
     self.startingChunk = chunk
     self.illegalCharacters = []
 
-  def getScore(self, chunk):
-    self.setStartingChunk(chunk)
-    self.validateChunk(self.startingChunk)
-    print(f"Chunk validated - {self.illegalCharacters}")
+  def getIllegalScore(self):
+    return ILLEGAL_SCORES[self.illegalCharacters[0]]
+
+  def getIncompleteScore(self):
+    completionChars = []
+    for char in self.startingChunk:
+      if len(completionChars) == 0:
+        completionChars.append(char)
+        continue
+      if char in CLOSE_BRACKETS and completionChars[-1] == BRACKET_PAIRS[char]:
+        completionChars.pop(-1)
+        continue
+      completionChars.append(char)
+    printChunk(completionChars)
     score = 0
-    if len(self.illegalCharacters) > 0:
-      if self.illegalCharacters[0] == BRACKET_CLOSE:
-        score = 3
-      if self.illegalCharacters[0] == SQUARE_CLOSE:
-        score = 57
-      if self.illegalCharacters[0] == CURLY_CLOSE:
-        score = 1197
-      if self.illegalCharacters[0] == ANGLED_CLOSE:
-        score = 25137
+    for char in reversed(completionChars):
+      score *= 5
+      score += INCOMPLETE_SCORES[char]
     return score
 
-  def validateChunk(self, startingChunk):
-    printChunk(startingChunk)
+  def isIllegal(self):
+    return len(self.illegalCharacters) > 0
+
+  def validateChunk(self, chunk):
+    self.setStartingChunk(chunk)
+    self.validateStep(self.startingChunk.copy())
+
+  def validateStep(self, startingChunk):
+    #printChunk(startingChunk)
     if len(startingChunk) == 2 and startingChunk[0] in OPEN_BRACKETS and startingChunk[1] in CLOSE_BRACKETS and startingChunk[0] == BRACKET_PAIRS[startingChunk[1]]:
-      print(f"Leaf found")
+      #print(f"Leaf found")
       return
     if len(startingChunk) < 2:
-      print(f"Incomplete chunk - {printChunk(startingChunk)}")
+      #print(f"Incomplete chunk - {printChunk(startingChunk)}")
       return
     openingBracket = startingChunk.pop(0)
     openBrackets = {ANGLED_OPEN: 0, CURLY_OPEN: 0, SQUARE_OPEN: 0, BRACKET_OPEN: 0}
@@ -61,19 +87,19 @@ class ChunkValidator():
       if nextChar in OPEN_BRACKETS:
         openBrackets[nextChar] += 1
         nextChunk.append(nextChar)
-        print(f"open Bracket - {nextChar} openBrackets - {openBrackets}")
+        #print(f"open Bracket - {nextChar} openBrackets - {openBrackets}")
         continue
       else:
         if openBrackets[BRACKET_PAIRS[nextChar]] == 0:
           self.illegalCharacters.append(nextChar)
-          print(f"Illegal - {nextChar}")
+          #print(f"Illegal - {nextChar}")
           return
         openBrackets[BRACKET_PAIRS[nextChar]] -= 1
         nextChunk.append(nextChar)
-        print(f"Legal close - {nextChar}")
+        #print(f"Legal close - {nextChar}")
         continue
-    self.validateChunk(nextChunk)
-    self.validateChunk(startingChunk)
+    self.validateStep(nextChunk)
+    self.validateStep(startingChunk)
     
 def printChunk(chunk):
   print("".join(chunk))
@@ -81,15 +107,23 @@ def printChunk(chunk):
 def getCharList(line):
   return [char for char in line]
 
-def main():
-  lines = fh.getMappedLines('input/day10', getCharList)
-
+def getScores(lines):
   validator = ChunkValidator()
 
-  score = 0
+  illegalScore = 0
+  incompleteScores = []
   for line in lines:
-    score += validator.getScore(line)
-  print(score)
+    validator.validateChunk(line)
+    if validator.isIllegal():
+      illegalScore += validator.getIllegalScore()
+    else:
+      incompleteScores.append(validator.getIncompleteScore())
+
+  return illegalScore, median(incompleteScores)
+
+def main():
+  lines = fh.getMappedLines('input/day10', getCharList)
+  print(getScores(lines))
 
 def test():
   testData = ["[({(<(())[]>[[{[]{<()<>>", "[(()[<>])]({[<{<<[]>>(",
@@ -98,13 +132,7 @@ def test():
   "{<[[]]>}<{[{[{[]{()[[[]", "[<(<(<(<{}))><([]([]()",
   "<{([([[(<>()){}]>(<<{{", "<{([{{}}[<[[[<>{}]]]>[]]"]
   lines = list(map(getCharList, testData))
-  
-  validator = ChunkValidator()
-
-  score = 0
-  for line in lines:
-    score += validator.getScore(line)
-  print(score)
+  print(getScores(lines))
 
 if __name__ == "__main__":
   main()
