@@ -10,7 +10,6 @@ class Field(gh.Grid):
     self.maxXIndex = self.maxX - 1
     self.maxYIndex = self.maxY - 1
     self.flashes = 0
-    self.step = 0
 
   def doSteps(self, steps):
     for step in range(1, steps + 1):
@@ -21,6 +20,16 @@ class Field(gh.Grid):
     self.add1ToAll()
     self.resolveFlashes()
     return
+
+  def findFirstFlash(self):
+    step = 0
+    while not self.allFlashed():
+      self.doStep()
+      step += 1
+    return step
+
+  def allFlashed(self):
+    return sum([sum(line) for line in self.points]) == 0
   
   def add1ToAll(self):
     self.points = [[x + 1 for x in line] for line in self.points]
@@ -59,17 +68,20 @@ def getIntList(line):
 def main():
   octopi = fh.getMappedLines('input/day11', getIntList)
   field = Field(octopi)
-  field.print()
   field.doSteps(100)
   print(f"Flashes {field.flashes}")
+
+  field = Field(octopi)
+  
+  print(f"First all flash {field.findFirstFlash()}")
 
 def convertTestData(data):
   return list(map(getIntList, data))
 
 def test():
   testData1 = ["5483143223","2745854711","5264556173","6141336146","6357385478","4167524645","2176841721","6882881134","4846848554","5283751526"]
-  testData2 = ["11111", "19991", "19191", "19991", "11111"]
-  testData3 = ["59", "85"]
+  testData2 = ["01", "00"]
+  testData3 = ["00", "00"]
   field = Field(convertTestData(testData1))
   field.doSteps(2)
   testData1Expected2Steps = ["8807476555", "5089087054", "8597889608", "8485769600", "8700908800", "6600088989", "6800005943", "0000007456", "9000000876", "8700006848"]
@@ -95,6 +107,12 @@ def test():
   expected = convertTestData(testData1Expected100Steps)
   assert expected == field.points, f"{field.points}"
   assert field.flashes == 1656, f"{field.flashes}"
+
+  assert True == Field(convertTestData(testData3)).allFlashed()
+  assert False == Field(convertTestData(testData2)).allFlashed()
+
+  field = Field(convertTestData(testData1))
+  assert 195 == field.findFirstFlash()
 
   print("Day 11 Tests passed")
 
