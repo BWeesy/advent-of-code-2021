@@ -56,7 +56,7 @@ class ChunkValidator():
         completionChars.pop(-1)
         continue
       completionChars.append(char)
-    printChunk(completionChars)
+    #printChunk(completionChars)
     score = 0
     for char in reversed(completionChars):
       score *= 5
@@ -132,7 +132,12 @@ def test():
   "{<[[]]>}<{[{[{[]{()[[[]", "[<(<(<(<{}))><([]([]()",
   "<{([([[(<>()){}]>(<<{{", "<{([{{}}[<[[[<>{}]]]>[]]"]
   lines = list(map(getCharList, testData))
-  print(getScores(lines))
+  scores = getScores(lines)
+
+  assert 26397 == scores[0]
+  assert 288957 == scores[1]
+
+  print("Day 10 Tests passed")
 
 if __name__ == "__main__":
   main()

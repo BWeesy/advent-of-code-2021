@@ -45,7 +45,9 @@ def test():
   heightMap = HeightMap(points)
   lowPoints = [(heightMap.getPoint(targetX, targetY), targetX, targetY) for (targetX, targetY) in heightMap.allIndexes() if heightMap.isLowerThanAllNeighbours(targetX, targetY)]
   #print(lowPoints)
-  print(heightMap.getMultipleOfLargestBasinSizes(3))
+  assert heightMap.getMultipleOfLargestBasinSizes(3) == 1134, f"{heightMap.getMultipleOfLargestBasinSizes(3)}"
+
+  print("Day 9 Tests passed")
 
 if __name__ == "__main__":
-  main()
+  test()

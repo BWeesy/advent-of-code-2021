@@ -10,12 +10,12 @@ class Field(gh.Grid):
     self.maxXIndex = self.maxX - 1
     self.maxYIndex = self.maxY - 1
     self.flashes = 0
+    self.step = 0
 
   def doSteps(self, steps):
     for step in range(1, steps + 1):
+      self.step = step
       self.doStep()
-      print(f"Step {step}")
-      self.print()
 
   def doStep(self):
     self.add1ToAll()
@@ -71,21 +71,18 @@ def test():
   testData2 = ["11111", "19991", "19191", "19991", "11111"]
   testData3 = ["59", "85"]
   field = Field(convertTestData(testData1))
-  field.print()
   field.doSteps(2)
   testData1Expected2Steps = ["8807476555", "5089087054", "8597889608", "8485769600", "8700908800", "6600088989", "6800005943", "0000007456", "9000000876", "8700006848"]
   expected = convertTestData(testData1Expected2Steps)
   assert expected == field.points, f"{field.points}"
   
   field = Field(convertTestData(testData1))
-  field.print()
   field.doSteps(3)
   testData1Expected3Steps = ["0050900866", "8500800575", "9900000039", "9700000041", "9935080063", "7712300000", "7911250009", "2211130000", "0421125000", "0021119000"]
   expected = convertTestData(testData1Expected3Steps)
   assert expected == field.points, f"{field.points}"
 
   field = Field(convertTestData(testData1))
-  field.print()
   field.doSteps(10)
   testData1Expected10Steps = ["0481112976", "0031112009", "0041112504", "0081111406", "0099111306", "0093511233", "0442361130", "5532252350", "0532250600", "0032240000"]
   expected = convertTestData(testData1Expected10Steps)
@@ -93,12 +90,13 @@ def test():
   assert field.flashes == 204, f"{field.flashes}"
 
   field = Field(convertTestData(testData1))
-  field.print()
   field.doSteps(100)
   testData1Expected100Steps = ["0397666866", "0749766918", "0053976933", "0004297822", "0004229892", "0053222877", "0532222966", "9322228966", "7922286866", "6789998766"]
   expected = convertTestData(testData1Expected100Steps)
   assert expected == field.points, f"{field.points}"
   assert field.flashes == 1656, f"{field.flashes}"
+
+  print("Day 11 Tests passed")
 
 if __name__ == "__main__":
   main()

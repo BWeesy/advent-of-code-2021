@@ -51,5 +51,7 @@ def test():
 
   assert day.numberOfFish() == 26, f"{day.numberOfFish()} --> {day.fishInDays}"
 
+  print("Day 6 Tests passed")
+
 if __name__ == "__main__":
   main()

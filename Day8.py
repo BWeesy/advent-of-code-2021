@@ -118,7 +118,7 @@ def test():
   result = decodeAndSumOutput(codesWithOutputs[0], codesWithOutputs[1])
   assert result == 5353, f"{result}"
 
-  print("Tests passed")
+  print("Day 8 Tests passed")
 
 if __name__ == "__main__":
   main()

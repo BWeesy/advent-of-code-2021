@@ -93,5 +93,7 @@ def test():
   scrubberResult = getScrubberRating(inputs, 5)
   assert scrubberResult == 10, f"{scrubberResult} - {bin(scrubberResult)}"
 
+  print("Day 3 Tests passed")
+
 if __name__ == "__main__":
   main()

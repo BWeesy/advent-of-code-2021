@@ -52,6 +52,7 @@ def test():
   assert submarine.getPosition() == 4, f"{submarine.getPosition()}"
   submarine.parseInstruction("down 1")
   assert submarine.getPosition() == 4, f"{submarine.getPosition()}"
+  print("Day 2 Tests passed")
 
 if __name__ == "__main__":
   main()
