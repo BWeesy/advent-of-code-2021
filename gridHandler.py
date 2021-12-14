@@ -96,3 +96,6 @@ class Grid():
   def print(self):
     for y in self.points:
       print(y)
+
+  def getPointsByCriteria(self, criteria):
+    return [(targetX, targetY) for targetX, targetY in self.getAllIndexes() if criteria(targetX, targetY)]
