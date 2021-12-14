@@ -72,7 +72,6 @@ def main():
   print(f"Flashes {field.flashes}")
 
   field = Field(octopi)
-  
   print(f"First all flash {field.findFirstFlash()}")
 
 def convertTestData(data):
