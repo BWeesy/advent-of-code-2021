@@ -1,14 +1,21 @@
 #0,0 is top left X horizontal, Y is vertical
 class Grid():
   def __init__(self, points) -> None:
-      self.points = points
+    print(points)
+    self.points = points
+    if points:
       self.maxX = len(points[0])
-      self.maxY = len(points)
-      self.maxXIndex = self.maxX - 1
-      self.maxYIndex = self.maxY - 1
+    else:
+      self.maxX = 0
+    self.maxY = len(points)
+    self.maxXIndex = self.maxX - 1
+    self.maxYIndex = self.maxY - 1
 
   def getPoint(self, x, y):
     return self.points[y][x]
+
+  def setPoint(self, x, y, value):
+    self.points[y-1][x-1] = value
 
   def allIndexes(self):
     for x in range(0, self.maxX):
@@ -99,3 +106,6 @@ class Grid():
 
   def getPointsByCriteria(self, criteria):
     return [(targetX, targetY) for targetX, targetY in self.getAllIndexes() if criteria(targetX, targetY)]
+
+  def fillEmptyPoints(self, sizeX, sizeY):
+    self.points = [[0 for y in range(0, sizeX)] for x in range(0, sizeY)]
